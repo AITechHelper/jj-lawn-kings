@@ -842,9 +842,66 @@
   .footer-links a:hover { color: var(--highlight); }
   .footer-copy { font-size: 0.82rem; color: rgba(255,255,255,0.2); }
 
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.25s, opacity 0.25s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 68px;
+    left: 0; right: 0;
+    background: #0D1209;
+    border-bottom: 2px solid var(--primary);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 99;
+    padding: 8px 0;
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a {
+    display: block;
+    padding: 14px 24px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.15s, color 0.15s;
+  }
+  .mobile-menu a:hover { background: rgba(77,122,52,0.15); color: var(--highlight); }
+  .mobile-menu .mobile-cta {
+    margin: 12px 24px 8px;
+    display: block;
+    background: var(--primary);
+    color: #fff !important;
+    text-align: center;
+    border-radius: 4px;
+    padding: 14px 24px !important;
+    font-weight: 700 !important;
+    border: 1px solid var(--primary-light);
+  }
+
   @media (max-width: 768px) {
     nav { padding: 0 16px; }
     .nav-links { display: none; }
+    .hamburger { display: flex; }
     .nav-logo-text { font-size: 1.1rem; }
 
     section { padding: 52px 20px; }
@@ -906,7 +963,19 @@
     <li><a href="#contact">Contact</a></li>
     <li><a href="tel:9185101379" class="nav-cta">Call Now</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#area" onclick="closeMenu()">Service Area</a>
+  <a href="#reviews" onclick="closeMenu()">Reviews</a>
+  <a href="#faq" onclick="closeMenu()">FAQ</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="tel:9185101379" class="mobile-cta">📞 (918) 510-1379</a>
+</div>
 
 <section class="hero">
   <div class="hero-glow"></div>
@@ -1256,6 +1325,19 @@
 </footer>
 
 <script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+
   function toggleFaq(el) {
     const answer = el.nextElementSibling;
     const isOpen = el.classList.contains('open');
